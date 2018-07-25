@@ -41,11 +41,11 @@ nav h1 {
 .card {
   display: inline-block;
   background-color: #fff;
-  box-shadow: 0 0 2px #ddd;
+  box-shadow: 0 0 10px #ddd;
   width: 80%;
-  min-height: 100px;
+  min-height: 65px;
   margin-top: 30px;
-  margin-left: 10%;
+  margin-left: 9.5%;
 }
 
 .card#tweets_graph {
@@ -58,6 +58,15 @@ nav h1 {
   height: 363px !important;
 }
 
-.card#map {
-  height: 436px;
+.right_container .card {
+  box-sizing: border-box;
+  padding: 23px 15px;
 }
+
+.right_container .card p {
+  margin: 0;
+}
+
+/* .card#map {
+  height: 436px;
+} */

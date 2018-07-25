@@ -1,3 +1,11 @@
+var socket = io('http://185.177.21.146:8082/');
+  socket.on('tweet', function (data) {
+    console.log(data);
+    document.getElementById("total_tweets").innerHTML = "Total Tweets: " + data.total_tweets;
+    // socket.emit('my other event', { my: 'data' });
+  });
+
+
 var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -25,3 +33,12 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+
+
+// var map;
+// function initMap() {
+//   map = new google.maps.Map(document.getElementById('map'), {
+//     center: {lat: -34.397, lng: 150.644},
+//     zoom: 8
+//   });
+// }
