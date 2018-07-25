@@ -7,10 +7,10 @@ var myChart = new Chart(ctx, {
             label: 'Number of Tweets',
             data: [12, 19, 3, 5, 2, 3],
             backgroundColor: [
-                'rgba(141, 67, 173, 0.4)'
+                'rgba(155, 88, 182, 0.4)'
             ],
             borderColor: [
-                "rgba(141, 67, 173, 1)"
+                "rgba(155, 88, 182, 1)"
             ],
             borderWidth: 1
         }]
