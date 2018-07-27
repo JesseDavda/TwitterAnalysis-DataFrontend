@@ -6,7 +6,7 @@
 body {
   margin: 0;
   padding: 0;
-  height: 100vh;
+  background-color: #f3f3f3;
 }
 
 nav {
@@ -24,17 +24,19 @@ nav h1 {
   /* font-size: 20px; */
 }
 
-.left_container {
-  float: left;
-  width: 60%;
-  height: calc(100vh - 63px);
-  background-color: #f3f3f3;
+.container {
+  width: 90%;
+  margin: 30px auto;
+  overflow: auto;
 }
 
-.right_container {
-  width: 40%;
-  height: calc(100vh - 63px);
-  background-color: #f3f3f3;
+.left {
+  width: 70%;
+  float: left;
+}
+
+.right {
+  width: 30%;
   float: right;
 }
 
@@ -42,31 +44,40 @@ nav h1 {
   display: inline-block;
   background-color: #fff;
   box-shadow: 0 0 10px #ddd;
-  width: 80%;
-  min-height: 65px;
-  margin-top: 30px;
-  margin-left: 9.5%;
+  margin-bottom: 30px;
+  float: right;
+  width: 90%;
 }
 
 .card#tweets_graph {
-  height: 363px;
-  width: 90%;
+  float: left;
+  height: 470px;
+  width: 100%;
 }
 
 .card#tweets_graph canvas{
-  width: 90%;
-  height: 363px !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
-.right_container .card {
+.right .card {
   box-sizing: border-box;
-  padding: 23px 15px;
+  padding: 35px 15px;
+  height: 95px;
 }
 
-.right_container .card p {
+.right .card:last-of-type {
+  margin-bottom: 0;
+}
+
+.right .card p {
   margin: 0;
+  font-size: 20px;
 }
 
-/* .card#map {
-  height: 436px;
-} */
+#map {
+  width: 90%;
+  height: 500px;
+  margin: 20px auto;
+  box-shadow: 0 0 10px #ddd;
+}

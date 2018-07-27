@@ -2,6 +2,9 @@ var socket = io('http://185.177.21.146:8082/');
   socket.on('tweet', function (data) {
     console.log(data);
     document.getElementById("total_tweets").innerHTML = "Total Tweets: " + data.total_tweets;
+    document.getElementById("average_favourites").innerHTML = "Average Favourites: " + data.average_favourites;
+    document.getElementById("average_retweets").innerHTML = "Average Retweets: " + data.average_retweets;
+    document.getElementById("average_followers").innerHTML = "Average Followers: " + data.average_followers;
     // socket.emit('my other event', { my: 'data' });
   });
 
@@ -35,10 +38,10 @@ var myChart = new Chart(ctx, {
 });
 
 
-// var map;
-// function initMap() {
-//   map = new google.maps.Map(document.getElementById('map'), {
-//     center: {lat: -34.397, lng: 150.644},
-//     zoom: 8
-//   });
-// }
+var map;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: -34.397, lng: 150.644},
+    zoom: 8
+  });
+}
