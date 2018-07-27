@@ -1,19 +1,30 @@
-var socket = io('http://185.177.21.146:8082/');
-  socket.on('tweet', function (data) {
-    console.log(data);
-    document.getElementById("total_tweets").innerHTML = "Total Tweets: " + data.total_tweets;
-    document.getElementById("average_favourites").innerHTML = "Average Favourites: " + data.average_favourites;
-    document.getElementById("average_retweets").innerHTML = "Average Retweets: " + data.average_retweets;
-    document.getElementById("average_followers").innerHTML = "Average Followers: " + data.average_followers;
-    // socket.emit('my other event', { my: 'data' });
-  });
+var dates = [], found;
 
+
+var socket = io('http://185.177.21.146:8082/');
+socket.on('tweet', function (data) {
+  // console.log(data);
+  document.getElementById("total_tweets").innerHTML = "Total Tweets: " + data.total_tweets;
+  document.getElementById("average_favourites").innerHTML = "Average Favourites: " + data.average_favourites;
+  document.getElementById("average_retweets").innerHTML = "Average Retweets: " + data.average_retweets;
+  document.getElementById("average_followers").innerHTML = "Average Followers: " + data.average_followers;
+  // socket.emit('my other event', { my: 'data' });
+
+  data.day_data.forEach(i => {
+    if(!dates.includes(i.date)){
+      console.log(i.date);
+      dates.push(i.date);
+      Chart.data.labels.push(dates);
+      Chart.update();
+    } 
+  });
+});
 
 var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(ctx, {
+var Chart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: ["21/07/18", "22/07/18", "23/07/18", "24/07/18", "25/07/18", "26/07/18"],
+        labels: dates,
         datasets: [{
             label: 'Number of Tweets',
             data: [12, 19, 3, 5, 2, 3],
