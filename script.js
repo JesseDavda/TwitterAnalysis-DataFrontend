@@ -127,6 +127,19 @@ var Chart = new Chart(ctx, {
 // });
 
 
+function swapChart(buttonName){
+  if (buttonName == "realtime") {
+    console.log("realtime");
+    document.getElementById('realtime_button').disabled = true;
+    document.getElementById('past_button').disabled = false;
+  } else {
+    console.log("past");
+    document.getElementById('realtime_button').disabled = false;
+    document.getElementById('past_button').disabled = true;
+  }
+}
+
+
 var map;
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
