@@ -13,6 +13,7 @@
     </nav>
 
     <div class="container">
+
       <div class="left">
         <div class="card" id="tweets_graph">
           <canvas id="realtime_chart"></canvas>
@@ -33,9 +34,14 @@
           <p id="average_followers">Average Followers: -</p>
         </div>
       </div>
+
     </div>
 
-    <!-- <canvas id="past_chart"></canvas> -->
+    <div class="buttons_container">
+      <button class="btn" onclick="" id="realtime_button">Real-Time</button>
+      <button class="btn" onclick="" id="past_button" disabled>Past Month</button>
+    </div>
+
     <div id="map"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>

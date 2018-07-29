@@ -11,6 +11,8 @@ socket.on('Starting Values', function(data){
   document.getElementById("average_retweets").innerHTML = "Average Retweets: " + data.average_retweets;
   document.getElementById("average_followers").innerHTML = "Average Followers: " + data.average_followers;
 
+  console.log(data.past_data);
+
   //Go through all the date objects from the data received
   data.day_data.forEach(i => {
       //Push the dates (x-axis) and number of tweets (y-axis) to chart_dates and chart_tweets variables
@@ -32,7 +34,7 @@ socket.on('New Tweet', function (data) {
   document.getElementById("average_retweets").innerHTML = "Average Retweets: " + data.average_retweets;
   document.getElementById("average_followers").innerHTML = "Average Followers: " + data.average_followers;
 
-  //Update the graph
+  //Update the graph and send
   updateGraph(data.day_data);
 });
 
@@ -70,7 +72,19 @@ var Chart = new Chart(ctx, {
             ],
             borderWidth: 1,
             lineTension: 0
-        }]
+        },{
+            label: 'Numbeets',
+            data: [12000, 19000, 30000, 50000, 20000, 30000],
+            backgroundColor: [
+                'rgba(155, 88, 182, 0.1)'
+            ],
+            borderColor: [
+                "rgba(155, 88, 182, 1)"
+            ],
+            borderWidth: 1,
+            lineTension: 0
+        }
+      ]
     },
     options: {
         scales: {
