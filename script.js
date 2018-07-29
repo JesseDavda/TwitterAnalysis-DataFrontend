@@ -3,7 +3,28 @@ var index, chart_dates = [], chart_tweets = [], starting_run = true;
 //Connect to the Socket.io port so we can receive the tweet data in realtime.
 var socket = io('http://185.177.21.146:8082/');
 
-//When the tweet data is received, carry out the following function
+//Run the following function when user connects to socket.io to update the graph with the starting values
+socket.on('Starting Values', function(data){
+  //Updating the values of the 4 cards (total tweets & average favorites, retweets and followers)
+  document.getElementById("total_tweets").innerHTML = "Total Tweets: " + data.total_tweets;
+  document.getElementById("average_favorites").innerHTML = "Average favorites: " + data.average_favorites;
+  document.getElementById("average_retweets").innerHTML = "Average Retweets: " + data.average_retweets;
+  document.getElementById("average_followers").innerHTML = "Average Followers: " + data.average_followers;
+
+  //Go through all the date objects from the data received
+  data.day_data.forEach(i => {
+      //Push the dates (x-axis) and number of tweets (y-axis) to chart_dates and chart_tweets variables
+      chart_dates.push(i.date);
+      chart_tweets.push(i.day_tweets);
+  });
+
+  //after all the values have been pushed, set the graph data to equal chart_dates and chart_tweets, then update the graph visuals;
+  Chart.data.labels = chart_dates;
+  Chart.data.datasets[0].data = chart_tweets;
+  Chart.update();
+});
+
+//When new tweet data is received, carry out the following function
 socket.on('New Tweet', function (data) {
   //Updating the values of the 4 cards (total tweets & average favorites, retweets and followers) in realtime.
   document.getElementById("total_tweets").innerHTML = "Total Tweets: " + data.total_tweets;
@@ -11,31 +32,12 @@ socket.on('New Tweet', function (data) {
   document.getElementById("average_retweets").innerHTML = "Average Retweets: " + data.average_retweets;
   document.getElementById("average_followers").innerHTML = "Average Followers: " + data.average_followers;
 
-  //Update the graph on first run and every 1 tweets. The 1 can be changed for quicker or slower update times.
-  if ((data.total_tweets % 1) == 0) {
-    updateGraph(data);
-  }
-});
-
-socket.on('Starting Values', function(data){
-  document.getElementById("total_tweets").innerHTML = "Total Tweets: " + data.total_tweets;
-  document.getElementById("average_favorites").innerHTML = "Average favorites: " + data.average_favorites;
-  document.getElementById("average_retweets").innerHTML = "Average Retweets: " + data.average_retweets;
-  document.getElementById("average_followers").innerHTML = "Average Followers: " + data.average_followers;
-
-  data.day_data.forEach(i => {
-      chart_dates.push(i.date);
-      chart_tweets.push(i.day_tweets);
-  });
-
-  Chart.data.labels = chart_dates;
-  Chart.data.datasets[0].data = chart_tweets;
-  Chart.update();
+  //Update the graph
+  updateGraph(data.day_data);
 });
 
 //The function that is called every 50th tweet to update all the values in the graph
 function updateGraph(data){
-  var data = data.day_data;
   if(!chart_dates.includes(data.date)){
     chart_dates.push(data.date);
     chart_tweets.push(data.day_tweets);
