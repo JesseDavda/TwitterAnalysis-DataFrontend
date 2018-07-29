@@ -1,4 +1,5 @@
-var index, chart_dates = [], chart_tweets = [], starting_run = true;
+var index, chart_dates = [], chart_tweets = [], starting_run = true, graph_state = "realtime", all_data;
+
 
 //Connect to the Socket.io port so we can receive the tweet data in realtime.
 var socket = io('http://185.177.21.146:8082/');
@@ -11,7 +12,8 @@ socket.on('Starting Values', function(data){
   document.getElementById("average_retweets").innerHTML = "Average Retweets: " + data.average_retweets;
   document.getElementById("average_followers").innerHTML = "Average Followers: " + data.average_followers;
 
-  console.log(data.past_data);
+
+  all_data = data;
 
   //Go through all the date objects from the data received
   data.day_data.forEach(i => {
@@ -29,12 +31,14 @@ socket.on('Starting Values', function(data){
 //When new tweet data is received, carry out the following function
 socket.on('New Tweet', function (data) {
   //Updating the values of the 4 cards (total tweets & average favorites, retweets and followers) in realtime.
-  document.getElementById("total_tweets").innerHTML = "Total Tweets: " + data.total_tweets;
-  document.getElementById("average_favorites").innerHTML = "Average favorites: " + data.average_favorites;
-  document.getElementById("average_retweets").innerHTML = "Average Retweets: " + data.average_retweets;
-  document.getElementById("average_followers").innerHTML = "Average Followers: " + data.average_followers;
+  if(graph_state=="realtime") {
+    document.getElementById("total_tweets").innerHTML = "Total Tweets: " + data.total_tweets;
+    document.getElementById("average_favorites").innerHTML = "Average favorites: " + data.average_favorites;
+    document.getElementById("average_retweets").innerHTML = "Average Retweets: " + data.average_retweets;
+    document.getElementById("average_followers").innerHTML = "Average Followers: " + data.average_followers;
+  }
 
-  //Update the graph and send
+  //Update the graph
   updateGraph(data.day_data);
 });
 
@@ -50,9 +54,11 @@ function updateGraph(data){
     }
   }
 
-  Chart.data.labels = chart_dates;
-  Chart.data.datasets[0].data = chart_tweets;
-  Chart.update();
+  if(graph_state=="realtime") {
+    Chart.data.labels = chart_dates;
+    Chart.data.datasets[0].data = chart_tweets;
+    Chart.update();
+  }
 }
 
 //Creating the graph using Chart.js
@@ -72,18 +78,19 @@ var Chart = new Chart(ctx, {
             ],
             borderWidth: 1,
             lineTension: 0
-        },{
-            label: 'Numbeets',
-            data: [12000, 19000, 30000, 50000, 20000, 30000],
-            backgroundColor: [
-                'rgba(155, 88, 182, 0.1)'
-            ],
-            borderColor: [
-                "rgba(155, 88, 182, 1)"
-            ],
-            borderWidth: 1,
-            lineTension: 0
         }
+        // ,{
+        //     label: 'Numbeets',
+        //     data: [12000, 19000, 30000, 50000, 20000, 30000],
+        //     backgroundColor: [
+        //         'rgba(155, 88, 182, 0.1)'
+        //     ],
+        //     borderColor: [
+        //         "rgba(155, 88, 182, 1)"
+        //     ],
+        //     borderWidth: 1,
+        //     lineTension: 0
+        // }
       ]
     },
     options: {
@@ -128,14 +135,35 @@ var Chart = new Chart(ctx, {
 
 
 function swapChart(buttonName){
-  if (buttonName == "realtime") {
-    console.log("realtime");
+  if (graph_state == "past") {
+    graph_state = "realtime";
     document.getElementById('realtime_button').disabled = true;
     document.getElementById('past_button').disabled = false;
-  } else {
-    console.log("past");
+
+    //change the 4 cards to show realtime data
+    document.getElementById("total_tweets").innerHTML = "Total Tweets: " + all_data.total_tweets;
+    document.getElementById("average_favorites").innerHTML = "Average favorites: " + all_data.average_favorites;
+    document.getElementById("average_retweets").innerHTML = "Average Retweets: " + all_data.average_retweets;
+    document.getElementById("average_followers").innerHTML = "Average Followers: " + all_data.average_followers;
+
+    //change graph to show realtime data
+
+
+  } else if (graph_state == "realtime") {
+    graph_state = "past";
     document.getElementById('realtime_button').disabled = false;
     document.getElementById('past_button').disabled = true;
+
+    //change the 4 cards to show past month data
+    document.getElementById("total_tweets").innerHTML = "Total Tweets: " + all_data.past_data.total_tweets;
+    document.getElementById("average_favorites").innerHTML = "Average favorites: " + all_data.past_data.average_favorites;
+    document.getElementById("average_retweets").innerHTML = "Average Retweets: " + all_data.past_data.average_retweets;
+    document.getElementById("average_followers").innerHTML = "Average Followers: " + all_data.past_data.average_followers;
+
+    //change graph to show past month data
+    // Chart.data.labels = chart_dates;
+    // Chart.data.datasets[0].data = chart_tweets;
+    // Chart.update();
   }
 }
 
