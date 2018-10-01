@@ -12,9 +12,9 @@ socket.on('Starting Values', function(data){
   document.getElementById("average_retweets").innerHTML = "Average Retweets: " + data.average_retweets;
   document.getElementById("average_followers").innerHTML = "Average Followers: " + data.average_followers;
 
-
+  //making all the data global so it can be accesed elsewhere.
   all_data = data;
-
+  console.log(all_data.past_data);
   //Go through all the date objects from the data received
   data.day_data.forEach(i => {
       //Push the dates (x-axis) and number of tweets (y-axis) to chart_dates and chart_tweets variables
@@ -136,6 +136,7 @@ var Chart = new Chart(ctx, {
 
 function swapChart(buttonName){
   if (graph_state == "past") {
+    //swapping the state 
     graph_state = "realtime";
     document.getElementById('realtime_button').disabled = true;
     document.getElementById('past_button').disabled = false;
@@ -150,6 +151,7 @@ function swapChart(buttonName){
 
 
   } else if (graph_state == "realtime") {
+    //swapping the state
     graph_state = "past";
     document.getElementById('realtime_button').disabled = false;
     document.getElementById('past_button').disabled = true;
